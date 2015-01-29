@@ -38,6 +38,11 @@ class Estacionamiento:
                     cont -= 1
 
         if mejor >= self.__capacidad:
+            
+            if (mejorInicio[0] > mejorFin[0]):
+                aux = mejorInicio
+                mejorInicio = mejorFin
+                mejorFin = aux
                 
             if ((horaFin.hour == mejorInicio[0]) or (horaIni.hour == mejorFin[0])):
                 hayPuesto = True
