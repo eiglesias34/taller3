@@ -57,7 +57,7 @@ class TestEst(unittest.TestCase):
         
         #Esquina, Frontera y Malicia: 10 carros reservan por la mitad del dia (06:00 - 12:00) y otros 
         #                            10 reservan por el resto del dia (12:00 - 18:00); luego otro carro trata
-        #                            de reservar por una hora de 11:00 a 12:00. (FALLA)
+        #                            de reservar por una hora de 11:00 a 12:00. 
         est.reservaciones = [[6,12], [6,12], [6,12], [6,12], [6,12], [6,12], [6,12], [6,12], [6,12], [6,12],
                     [12,18], [12,18], [12,18], [12,18], [12,18], [12,18], [12,18], [12,18], [12,18], [12,18]]
         horaIni = datetime.strptime("11:00", formato)
