@@ -19,7 +19,46 @@ class Estacionamiento:
 
     # Algoritmo de Marzullo
     def verificarDisponibilidad(self, reservas, horaIni, horaFin):
-        return True
+        cont = 0;
+        mejor = 0;
+        hayPuesto = True;
+        
+        if reservas != 0:
+            mejorInicio = reservas[0]
+            mejorFin = reservas[1]           
+        pos = 2;    
+        while cont >= mejor:    
+            if mejorInicio[1] == -1:
+                cont += 1
+                mejor += 1
+                if mejorFin[1] == -1:     
+                    mejorInicio = mejorFin
+                    mejorFin = reservas[pos]
+                    pos += 1
+                else:
+                    cont -= 1
+                
+        print(mejor)
+        print(self.__capacidad)
+
+        if mejor >= self.__capacidad:
+            print(mejorInicio[0],horaIni.hour,mejorFin[0],horaFin.hour)            
+            if (mejorInicio[0] >= horaIni.hour) or (mejorFin[0] >= horaFin.hour):
+                hayPuesto = False
+         
+        return hayPuesto 
+    
+def dividir(seq):
+    inicio = []
+    fin = []
+    i = 0
+    while i < len(seq):
+        if seq[i][1] == -1:
+            inicio.append(seq[i])
+        else:
+            fin.append(seq[i])
+        i+=1
+    return inicio,fin
     
 if __name__ == '__main__':
     est = Estacionamiento()
@@ -36,24 +75,29 @@ if __name__ == '__main__':
                 print("Hora invalida.")
 
         while True:
-            hf = raw_input("Introduzca hora de la finalizacion de la reservacion (hh:mm): ")
-            hf = datetime.strptime(str(hf), formato)
-            if ((hf.minute == 0) and (est.getHoraMinReserva() < hf.hour <= est.getHoraMaxReserva()) and (hf.hour > horaIni.hour)):
+            horaFin = raw_input("Introduzca hora de la finalizacion de la reservacion (hh:mm): ")
+            horaFin = datetime.strptime(str(horaFin), formato)
+            if ((horaFin.minute == 0) and (est.getHoraMinReserva() < horaFin.hour <= est.getHoraMaxReserva()) and (horaFin.hour > horaIni.hour)):
                 break;
             else:
                 print("Hora invalida.")
                 
         if len(est.reservaciones) == 0:
-            est.reservaciones.append([horaIni.hour,hf.hour])
+            est.reservaciones.append([horaIni.hour,horaFin.hour])
             print("Se realizo una reservacion exitosa")
         else:
+            ri,rf = dividir(reservas)
+            ri.sort()
+            rf.sort()
+            reservas = ri + rf
+            
             if reservas != []: 
-                if (est.verificarDisponibilidad(reservas, horaIni, hf)):
+                if (est.verificarDisponibilidad(reservas, horaIni, horaFin)):
                     print("Se realizo una reservacion exitosa")
                 else:
                     print("No se puede realizar la reserva solicitada")
             else:
-                est.reservaciones.append([horaIni.hour,hf.hour])
+                est.reservaciones.append([horaIni.hour,horaFin.hour])
                 print("Se realizo una reservacion exitosa")
 
         while True:
