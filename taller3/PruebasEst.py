@@ -48,7 +48,7 @@ class TestEst(unittest.TestCase):
         horaFin = datetime.strptime("18:00", formato)
         self.assertEqual(est.verificarDisponibilidad(reservas,horaIni,horaFin), False)
         
-        #Malicia: Comienzan unas reservas a las 13:00 y otra termina cuando empiezan estas. 
+        #Malicia: Comienzan unas reservas a las 13:00 y una nueva termina cuando empiezan estas. 
         reservas =[[12,-1],[12,-1],[12,-1],[12,-1],[12,-1],[13,-1],[13,-1],[13,-1],[13,-1],[13,-1],
                    [14,1],[14,1],[14,1],[14,1],[14,1],[15,1],[15,1],[15,1],[15,1],[15,1]]
         horaIni = datetime.strptime("10:00", formato)

@@ -21,42 +21,45 @@ class Estacionamiento:
     def verificarDisponibilidad(self, reservas, horaIni, horaFin):
         cont = 0;
         mejor = 0;
-        hayPuesto = True;
-        
-        if reservas != 0:
-            mejorInicio = reservas[0]
-            mejorFin = reservas[1]           
+        hayPuesto = True
+        mejorInicio = reservas[0]
+        mejorFin = reservas[1]
         pos = 2;    
-        while cont >= mejor:    
+
+        while cont >= mejor:
             if mejorInicio[1] == -1:
                 cont += 1
                 mejor += 1
-                if mejorFin[1] == -1:     
+                if mejorFin[1] == -1:
                     mejorInicio = mejorFin
                     mejorFin = reservas[pos]
                     pos += 1
                 else:
                     cont -= 1
-                
-        print(mejor)
-        print(self.__capacidad)
 
         if mejor >= self.__capacidad:
-            print(mejorInicio[0],horaIni.hour,mejorFin[0],horaFin.hour)            
-            if (mejorInicio[0] >= horaIni.hour) or (mejorFin[0] >= horaFin.hour):
+
+            if ((horaFin.hour == mejorInicio[0]) or (horaIni.hour == mejorFin[0])):
+                hayPuesto = True
+            else:
                 hayPuesto = False
-         
-        return hayPuesto 
+        
+        if hayPuesto:
+            self.reservaciones.append([horaIni.hour,horaFin.hour])
+
+        return hayPuesto        
     
-def dividir(seq):
+# Funcion que escoge los intervalos a considerar en el algoritmo de Marzullo y los
+# ordena. No toma en cuenta aquellos que estan en la frontera del intervalo de la nueva
+# reservacion que se quiere agregar.
+def dividir(seq,horaIni,horaFin):
     inicio = []
     fin = []
     i = 0
     while i < len(seq):
-        if seq[i][1] == -1:
-            inicio.append(seq[i])
-        else:
-            fin.append(seq[i])
+        if (seq[i][0] <= horaIni < seq[i][1]) or (seq[i][0] < horaFin <= seq[i][1]):
+            inicio.append([seq[i][0],-1])
+            fin.append([seq[i][1],1])
         i+=1
     return inicio,fin
     
