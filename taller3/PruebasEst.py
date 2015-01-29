@@ -62,3 +62,14 @@ class TestEst(unittest.TestCase):
         horaIni = datetime.strptime("06:00", formato)
         horaFin = datetime.strptime("09:00", formato)
         self.assertEqual(est.verificarDisponibilidad(reservas,horaIni,horaFin), True)
+        
+        #Esquina, Frontera y Malicia: 10 carros reservan por la mitad del dia (06:00 - 12:00) y otros 
+        #                            10 reservan por el resto del dia (12:00 - 18:00); luego otro carro trata
+        #                            de reservar por una hora de 11:00 a 12:00. (FALLA)
+        reservas = [[6,-1], [6,-1], [6,-1], [6,-1], [6,-1], [6,-1], [6,-1], [6,-1], [6,-1], [6,-1],
+                    [12,-1], [12,-1], [12,-1], [12,-1], [12,-1], [12,-1], [12,-1], [12,-1], [12,-1],
+                    [12,1], [12,1], [12,1], [12,1], [12,1], [12,1], [12,1], [12,1], [12,1], [12,1],
+                    [18,1], [18,1], [18,1], [18,1], [18,1], [18,1], [18,1], [18,1], [18,1], [18,1]]
+        horaIni = datetime.strptime("11:00", formato)
+        horaFin = datetime.strptime("12:00", formato)
+        self.assertEqual(est.verificarDisponibilidad(reservas,horaIni,horaFin), False)
