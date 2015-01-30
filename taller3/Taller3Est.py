@@ -1,13 +1,23 @@
+'''
+Descripcion: Modulo principal de la Tarea 3.
+Se implemento el algoritmo de Marzullo modificado, tomando en cuenta para el calculo solo
+los intervalos contenidos en la nueva reservacion a agregar.
+Se asumen los datos de entrada validos, los cuales se verifican mediante programacion defensiva
+en el main de este modulo
+
+@author: Monica Figuera 11-10328
+@author: Enrique Iglesias 11-10477
+'''
+
 from datetime import datetime,timedelta
 
 class Estacionamiento:
-    def __init__(self):
-        self.__capacidad = 10
+    def __init__(self,capacidad):
+        self.__capacidad = capacidad
         self.__horaMinReserva = 6
         self.__horaMaxReserva = 18
         self.reservaciones = []
         
-           
     def getCapacidad(self):
         return self.__capacidad
 
@@ -16,6 +26,15 @@ class Estacionamiento:
 
     def getHoraMaxReserva(self):
         return self.__horaMaxReserva
+
+    def setCapacidad(self,nuevaCap):
+        self.__capacidad = nuevaCap
+
+    def setHoraMinReserva(self,nuevaHoraMin):
+        self.__horaMinReserva = nuevaHoraMin
+
+    def setHoraMaxReserva(self,nuevaHoraMax):
+        self.__horaMaxReserva = nuevaHoraMax
 
     # Algoritmo de Marzullo
     def verificarDisponibilidad(self, horaIni, horaFin):
@@ -57,23 +76,19 @@ class Estacionamiento:
                 else:
                     cont -= 1
 
-        if mejor >= self.__capacidad:
-            
+        if mejor >= self.__capacidad:            
             if (mejorInicio[0] > mejorFin[0]):
                 aux = mejorInicio
                 mejorInicio = mejorFin
                 mejorFin = aux
-                
-            if ((horaFin == mejorInicio[0]) or (horaIni == mejorFin[0])):
-                return True
-            else:
+            if ((horaFin != mejorInicio[0]) and (horaIni != mejorFin[0])):
                 return False
         
         self.reservaciones.append([horaIni,horaFin])
         return True            
     
 if __name__ == '__main__':
-    est = Estacionamiento()
+    est = Estacionamiento(10)
     formato = '%H:%M'
     
     while True:    
